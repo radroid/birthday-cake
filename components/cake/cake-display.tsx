@@ -68,7 +68,6 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
   const plateWidth = cakeWidth + 32;
 
   // Scale decorative elements based on cake width
-  const dripCount = Math.max(5, Math.floor(cakeWidth / 35));
   const topDotCount = Math.max(4, Math.floor(cakeWidth / 45));
   const middleDotCount = Math.max(3, Math.floor(cakeWidth / 55));
 
@@ -165,20 +164,6 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
           className="relative flex flex-col items-center"
           style={{ width: plateWidth }}
         >
-          {/* Frosting drips */}
-          <div
-            className="absolute -top-2 flex justify-around z-10"
-            style={{ width: cakeWidth }}
-          >
-            {[...Array(dripCount)].map((_, i) => (
-              <div
-                key={i}
-                className={`w-4 ${style.drip} rounded-b-full`}
-                style={{ height: `${12 + Math.random() * 8}px` }}
-              />
-            ))}
-          </div>
-
           {/* Top layer (frosting) */}
           <div
             className={`h-12 ${style.frosting} rounded-t-lg shadow-inner relative`}

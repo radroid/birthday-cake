@@ -52,6 +52,9 @@ export function Candle({ isLit, color, intensity = 0, delay = 0 }: CandleProps) 
         <div className="absolute top-0 left-0 w-1 h-3 bg-white/30 rounded-b-full" />
         <div className="absolute top-1 right-0.5 w-0.5 h-2 bg-white/20 rounded-b-full" />
       </motion.div>
+
+      {/* Candle holder */}
+      <div className="w-4 h-2 bg-amber-800 rounded-b-full -mt-0.5" />
     </motion.div>
   );
 }
