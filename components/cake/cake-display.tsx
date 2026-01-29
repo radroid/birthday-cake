@@ -56,16 +56,21 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
   const allBlownOut = litCandles.every((lit) => !lit);
 
   // Calculate cake dimensions based on number of candles
-  // Each candle takes ~20px width + 8px gap = 28px per candle
-  const candleSpacing = 20; // pixels per candle (width + gap)
-  const minCakeWidth = 200;
-  const cakeWidth = Math.max(minCakeWidth, data.age * candleSpacing + 40);
-  const plateWidth = cakeWidth + 40;
+  // Candle width: 12px (w-3), gap: 4px (gap-1), padding: 16px each side
+  const candleWidth = 12;
+  const candleGap = 4;
+  const sidePadding = 16;
+  const minCakeWidth = 180;
+
+  // Total width = candles × width + (candles - 1) × gap + 2 × padding
+  const candlesWidth = data.age * candleWidth + (data.age - 1) * candleGap + sidePadding * 2;
+  const cakeWidth = Math.max(minCakeWidth, candlesWidth);
+  const plateWidth = cakeWidth + 32;
 
   // Scale decorative elements based on cake width
-  const dripCount = Math.max(5, Math.floor(cakeWidth / 40));
-  const topDotCount = Math.max(4, Math.floor(cakeWidth / 50));
-  const middleDotCount = Math.max(3, Math.floor(cakeWidth / 60));
+  const dripCount = Math.max(5, Math.floor(cakeWidth / 35));
+  const topDotCount = Math.max(4, Math.floor(cakeWidth / 45));
+  const middleDotCount = Math.max(3, Math.floor(cakeWidth / 55));
 
   useEffect(() => {
     if (allBlownOut && !showCelebration) {
@@ -128,15 +133,21 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
 
       {/* Cake */}
       <motion.div
-        className="relative"
+        className="flex flex-col items-center"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2, type: 'spring' }}
       >
-        {/* Candles container */}
+        {/* Candles container - centered above cake */}
         <div
-          className="flex justify-center gap-2 mb-2 relative z-10 px-4"
-          style={{ width: cakeWidth }}
+          className="flex justify-center items-end relative z-10"
+          style={{
+            width: cakeWidth,
+            paddingLeft: sidePadding,
+            paddingRight: sidePadding,
+            marginBottom: -4,
+            gap: candleGap,
+          }}
         >
           {litCandles.map((isLit, index) => (
             <Candle
@@ -150,13 +161,19 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
         </div>
 
         {/* Cake body */}
-        <div className="relative">
+        <div
+          className="relative flex flex-col items-center"
+          style={{ width: plateWidth }}
+        >
           {/* Frosting drips */}
-          <div className="absolute -top-2 left-0 right-0 flex justify-around z-10">
+          <div
+            className="absolute -top-2 flex justify-around z-10"
+            style={{ width: cakeWidth }}
+          >
             {[...Array(dripCount)].map((_, i) => (
               <div
                 key={i}
-                className={`w-4 h-6 ${style.drip} rounded-b-full`}
+                className={`w-4 ${style.drip} rounded-b-full`}
                 style={{ height: `${12 + Math.random() * 8}px` }}
               />
             ))}
@@ -201,7 +218,7 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
 
           {/* Cake plate */}
           <div
-            className="h-4 bg-gray-200 rounded-full mx-auto -mt-1 shadow-md"
+            className="h-4 bg-gray-200 rounded-full shadow-md -mt-1"
             style={{ width: plateWidth }}
           />
         </div>
