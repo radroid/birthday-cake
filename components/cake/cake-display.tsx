@@ -56,16 +56,16 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
   const allBlownOut = litCandles.every((lit) => !lit);
 
   // Calculate cake dimensions based on number of candles
-  // Candle width: 12px (w-3), gap: 4px (gap-1), padding: 16px each side
-  const candleWidth = 12;
+  // Candle holder width: 16px (w-4), gap: 4px (gap-1), padding: 20px each side
+  const candleHolderWidth = 16; // The holder is wider than the candle body
   const candleGap = 4;
-  const sidePadding = 16;
+  const sidePadding = 20;
   const minCakeWidth = 180;
 
-  // Total width = candles × width + (candles - 1) × gap + 2 × padding
-  const candlesWidth = data.age * candleWidth + (data.age - 1) * candleGap + sidePadding * 2;
+  // Total width = candles × holder_width + (candles - 1) × gap + 2 × padding
+  const candlesWidth = data.age * candleHolderWidth + (data.age - 1) * candleGap + sidePadding * 2;
   const cakeWidth = Math.max(minCakeWidth, candlesWidth);
-  const plateWidth = cakeWidth + 32;
+  const plateWidth = cakeWidth + 40;
 
   // Scale decorative elements based on cake width
   const topDotCount = Math.max(4, Math.floor(cakeWidth / 45));
@@ -144,7 +144,7 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
             width: cakeWidth,
             paddingLeft: sidePadding,
             paddingRight: sidePadding,
-            marginBottom: -4,
+            marginBottom: -8, // Overlap holders with cake top
             gap: candleGap,
           }}
         >
