@@ -6,6 +6,7 @@ import { Copy, Check, Gift, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { generateCakeUrl, type CakeData } from '@/lib/cake-encoding';
 
@@ -17,21 +18,19 @@ const cakeStyles: { value: CakeData['style']; label: string; emoji: string }[] =
 ];
 
 export function CakeCreator() {
-  const [name, setName] = useState('');
   const [message, setMessage] = useState('');
-  const [candles, setCandles] = useState(5);
+  const [age, setAge] = useState(25);
   const [style, setStyle] = useState<CakeData['style']>('chocolate');
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    if (!message.trim()) return;
 
     const cakeData: CakeData = {
-      name: name.trim(),
       message: message.trim(),
-      candles,
+      age,
       style,
     };
 
@@ -54,9 +53,8 @@ export function CakeCreator() {
 
   const handleReset = () => {
     setGeneratedUrl(null);
-    setName('');
     setMessage('');
-    setCandles(5);
+    setAge(25);
     setStyle('chocolate');
   };
 
@@ -102,30 +100,17 @@ export function CakeCreator() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-medium">
-                  Recipient&apos;s Name *
-                </label>
-                <Input
-                  id="name"
-                  placeholder="Enter their name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  maxLength={50}
-                />
-              </div>
-
-              <div className="space-y-2">
                 <label htmlFor="message" className="text-sm font-medium">
-                  Birthday Message
+                  Birthday Message *
                 </label>
                 <Textarea
                   id="message"
-                  placeholder="Write a special message..."
+                  placeholder="Happy Birthday! Wishing you all the best..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   maxLength={200}
                   rows={3}
+                  required
                 />
                 <p className="text-xs text-gray-500">
                   {message.length}/200 characters
@@ -133,21 +118,21 @@ export function CakeCreator() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="candles" className="text-sm font-medium">
-                  Number of Candles: {candles}
+                <label htmlFor="age" className="text-sm font-medium">
+                  Age (Number of Candles): {age}
                 </label>
                 <input
-                  id="candles"
+                  id="age"
                   type="range"
                   min="1"
-                  max="10"
-                  value={candles}
-                  onChange={(e) => setCandles(parseInt(e.target.value))}
+                  max="100"
+                  value={age}
+                  onChange={(e) => setAge(parseInt(e.target.value))}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-pink-500"
                 />
                 <div className="flex justify-between text-xs text-gray-500">
                   <span>1</span>
-                  <span>10</span>
+                  <span>100</span>
                 </div>
               </div>
 
@@ -175,7 +160,7 @@ export function CakeCreator() {
               <Button
                 type="submit"
                 className="w-full gap-2"
-                disabled={!name.trim()}
+                disabled={!message.trim()}
               >
                 <Sparkles className="w-4 h-4" />
                 Create Birthday Cake
@@ -195,7 +180,7 @@ export function CakeCreator() {
                 Cake Created!
               </CardTitle>
               <CardDescription>
-                Share this link with {name} so they can blow out the candles!
+                Share this link so they can blow out the candles!
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

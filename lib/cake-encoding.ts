@@ -1,22 +1,19 @@
 export interface CakeData {
-  name: string;
   message: string;
-  candles: number;
+  age: number;
   style: 'chocolate' | 'vanilla' | 'strawberry' | 'rainbow';
 }
 
 interface CompressedCakeData {
-  n: string; // name
   m: string; // message
-  c: number; // candles
+  a: number; // age (number of candles)
   s: string; // style
 }
 
 export function encodeCakeData(data: CakeData): string {
   const compressed: CompressedCakeData = {
-    n: data.name,
     m: data.message,
-    c: data.candles,
+    a: data.age,
     s: data.style,
   };
   const json = JSON.stringify(compressed);
@@ -39,9 +36,8 @@ export function decodeCakeData(encoded: string): CakeData | null {
 
     // Validate data
     if (
-      typeof compressed.n !== 'string' ||
       typeof compressed.m !== 'string' ||
-      typeof compressed.c !== 'number' ||
+      typeof compressed.a !== 'number' ||
       typeof compressed.s !== 'string'
     ) {
       return null;
@@ -53,15 +49,14 @@ export function decodeCakeData(encoded: string): CakeData | null {
       return null;
     }
 
-    // Validate candle count
-    if (compressed.c < 1 || compressed.c > 10) {
+    // Validate age (candle count)
+    if (compressed.a < 1 || compressed.a > 150) {
       return null;
     }
 
     return {
-      name: compressed.n,
       message: compressed.m,
-      candles: compressed.c,
+      age: compressed.a,
       style: compressed.s as CakeData['style'],
     };
   } catch {

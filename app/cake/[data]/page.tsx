@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: PageProps) {
   }
 
   return {
-    title: `Happy Birthday, ${cakeData.name}!`,
-    description: cakeData.message || `Blow out the candles on this virtual birthday cake for ${cakeData.name}!`,
+    title: "Happy Birthday!",
+    description: cakeData.message || "Blow out the candles on this virtual birthday cake!",
   };
 }
 

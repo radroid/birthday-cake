@@ -41,12 +41,12 @@ const cakeStyles = {
 
 export function CakeDisplay({ data }: CakeDisplayProps) {
   const [litCandles, setLitCandles] = useState<boolean[]>(
-    Array(data.candles).fill(true)
+    Array(data.age).fill(true)
   );
   const [blowIntensity, setBlowIntensity] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const [candleColorIndices] = useState(() =>
-    Array(data.candles)
+    Array(data.age)
       .fill(0)
       .map((_, i) => i % candleColors.length)
   );
@@ -95,28 +95,23 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
   }, [blowOutCandle]);
 
   const handleBlowOutAll = useCallback(() => {
-    setLitCandles(Array(data.candles).fill(false));
-  }, [data.candles]);
+    setLitCandles(Array(data.age).fill(false));
+  }, [data.age]);
 
   const handleReset = useCallback(() => {
-    setLitCandles(Array(data.candles).fill(true));
+    setLitCandles(Array(data.age).fill(true));
     setShowCelebration(false);
-  }, [data.candles]);
+  }, [data.age]);
 
   return (
     <div className="flex flex-col items-center gap-8 p-4">
-      {/* Recipient name and message */}
+      {/* Message */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-pink-600 mb-2">
-          Happy Birthday, {data.name}!
-        </h1>
-        {data.message && (
-          <p className="text-lg text-gray-600 max-w-md">{data.message}</p>
-        )}
+        <p className="text-xl md:text-2xl text-gray-700 max-w-md">{data.message}</p>
       </motion.div>
 
       {/* Cake */}
@@ -278,7 +273,7 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
                 Make a wish!
               </h2>
               <p className="text-gray-600 mb-4">
-                All candles are blown out! Close your eyes and make a wish, {data.name}!
+                All candles are blown out! Close your eyes and make a wish!
               </p>
 
               {/* Confetti */}
