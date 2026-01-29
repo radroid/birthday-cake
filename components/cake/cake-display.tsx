@@ -55,6 +55,18 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
   const style = cakeStyles[data.style];
   const allBlownOut = litCandles.every((lit) => !lit);
 
+  // Calculate cake dimensions based on number of candles
+  // Each candle takes ~20px width + 8px gap = 28px per candle
+  const candleSpacing = 20; // pixels per candle (width + gap)
+  const minCakeWidth = 200;
+  const cakeWidth = Math.max(minCakeWidth, data.age * candleSpacing + 40);
+  const plateWidth = cakeWidth + 40;
+
+  // Scale decorative elements based on cake width
+  const dripCount = Math.max(5, Math.floor(cakeWidth / 40));
+  const topDotCount = Math.max(4, Math.floor(cakeWidth / 50));
+  const middleDotCount = Math.max(3, Math.floor(cakeWidth / 60));
+
   useEffect(() => {
     if (allBlownOut && !showCelebration) {
       setShowCelebration(true);
@@ -122,7 +134,10 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
         transition={{ delay: 0.2, type: 'spring' }}
       >
         {/* Candles container */}
-        <div className="flex justify-center gap-4 mb-2 relative z-10">
+        <div
+          className="flex justify-center gap-2 mb-2 relative z-10 px-4"
+          style={{ width: cakeWidth }}
+        >
           {litCandles.map((isLit, index) => (
             <Candle
               key={index}
@@ -138,7 +153,7 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
         <div className="relative">
           {/* Frosting drips */}
           <div className="absolute -top-2 left-0 right-0 flex justify-around z-10">
-            {[...Array(7)].map((_, i) => (
+            {[...Array(dripCount)].map((_, i) => (
               <div
                 key={i}
                 className={`w-4 h-6 ${style.drip} rounded-b-full`}
@@ -149,11 +164,12 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
 
           {/* Top layer (frosting) */}
           <div
-            className={`w-64 md:w-80 h-12 ${style.frosting} rounded-t-lg shadow-inner relative`}
+            className={`h-12 ${style.frosting} rounded-t-lg shadow-inner relative`}
+            style={{ width: cakeWidth }}
           >
             {/* Decorative dots */}
             <div className="absolute bottom-2 left-0 right-0 flex justify-around px-4">
-              {[...Array(6)].map((_, i) => (
+              {[...Array(topDotCount)].map((_, i) => (
                 <div
                   key={i}
                   className={`w-2 h-2 ${style.accent} rounded-full`}
@@ -163,9 +179,12 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
           </div>
 
           {/* Middle layer */}
-          <div className={`w-64 md:w-80 h-16 ${style.base} shadow-md relative`}>
+          <div
+            className={`h-16 ${style.base} shadow-md relative`}
+            style={{ width: cakeWidth }}
+          >
             <div className="absolute top-2 left-0 right-0 flex justify-around px-6">
-              {[...Array(5)].map((_, i) => (
+              {[...Array(middleDotCount)].map((_, i) => (
                 <div
                   key={i}
                   className={`w-3 h-3 ${style.accent} rounded-full opacity-50`}
@@ -176,11 +195,15 @@ export function CakeDisplay({ data }: CakeDisplayProps) {
 
           {/* Bottom layer */}
           <div
-            className={`w-64 md:w-80 h-12 ${style.base} rounded-b-lg shadow-lg`}
+            className={`h-12 ${style.base} rounded-b-lg shadow-lg`}
+            style={{ width: cakeWidth }}
           />
 
           {/* Cake plate */}
-          <div className="w-72 md:w-96 h-4 bg-gray-200 rounded-full mx-auto -mt-1 shadow-md" />
+          <div
+            className="h-4 bg-gray-200 rounded-full mx-auto -mt-1 shadow-md"
+            style={{ width: plateWidth }}
+          />
         </div>
       </motion.div>
 
